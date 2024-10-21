@@ -128,18 +128,6 @@ def scrape(target_url):
             return "Failed to retrieve the target page.", 500
     except Exception as e:
         return str(e), 500
-from urllib.parse import unquote
-
-@app.route('/download/<int:quality>/<path:video_url>', methods=['GET'])
-def download_page(quality, video_url):
-    decoded_url = unquote(video_url)
-    
-    # إزالة أي نص قبل "https://uupbom.com/"
-    domain = "uupbom.com/"
-    if domain in decoded_url:
-        decoded_url = decoded_url.split(domain)[1]  # تأخذ كل شيء بعد الدومين
-
-    return render_template('download_page.html', video_url=decoded_url, quality=quality)
 
 @app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات
