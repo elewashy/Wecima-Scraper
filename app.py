@@ -128,6 +128,9 @@ def scrape(target_url):
             return "Failed to retrieve the target page.", 500
     except Exception as e:
         return str(e), 500
+@app.route('/download/<int:quality>/<path:video_url>', methods=['GET'])
+def download_page(quality, video_url):
+    return render_template('download_page.html', video_url=video_url, quality=quality)
 
 @app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات

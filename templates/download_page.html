@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل الفيديو</title>
+    <style>
+        body {
+            margin: 0;
+            padding: 20px;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .download-link {
+            display: inline-block;
+            margin-top: 50px;
+            padding: 15px 30px;
+            background-color: #00aaff;
+            color: white;
+            text-decoration: none;
+            font-size: 20px;
+            border-radius: 10px;
+            transition: background-color 0.3s;
+        }
+        .download-link:hover {
+            background-color: #0088cc;
+        }
+    </style>
+</head>
+<body>
+    <h1>{{ quality }}p</h1>
+    <a href="{{ video_url }}" class="download-link">اضغط هنا لتحميل الفيديو</a>
+</body>
+</html>
