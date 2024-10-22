@@ -1,9 +1,12 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from urllib.parse import quote
 
 def search_series(query):
-    url = f"https://wecima.movie/search/{query}/"
+    encoded_query = quote(query)
+    url = f"https://wecima.movie/search/{encoded_query}/"
+
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
