@@ -17,10 +17,9 @@ def index(page_number=1):
     page_title = "المضاف حديثا"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-@app.route('/search/') 
-def search():
-    query = request.args.get('query', '')  # الحصول على كلمة البحث من الاستعلام
-    series = search_series(query)  # استدعاء دالة البحث
+@app.route('/search/<query>')  # المسار الآن يعتمد على الكلمة بعد /search/
+def search(query):
+    series = search_series(query)  # استدعاء دالة البحث باستخدام الكلمة
     page_title = f"نتائج البحث عن: {query}"
     return render_template('Series.html', series=series, page_title=page_title)
 
