@@ -20,7 +20,7 @@ def index(page_number=1):
 @app.route('/search/<query>')  # المسار الآن يعتمد على الكلمة بعد /search/
 def search(query):
     series = search_series(query)  # استدعاء دالة البحث باستخدام الكلمة
-    page_title = f"نتائج البحث : {query}"
+    page_title = f"نتائج البحث عن : {query}"
     return render_template('search.html', series=series, page_title=page_title)
 
 @app.route('/series/<path:series_name>/')  
