@@ -616,7 +616,7 @@
 			// إذا كان هناك نص مدخل، عرض زر البحث
 			if (input) {
 				const link = document.createElement("a");
-				link.href = `/search/?query=${encodeURIComponent(input)}`;
+				link.href = `/search/${encodeURIComponent(input)}`;
 				link.textContent = `نتائج البحث عن: ${input}`;
 				link.target = "_blank"; // لفتح الرابط في علامة تبويب جديدة
 	
