@@ -47,6 +47,5 @@ def search_series(query):
             })
 
     # عرض النص بشكل صحيح
-    decoded_query = unquote(query)  # فك تشفير الاستعلام هنا
-    print(f"نتائج البحث عن: {decoded_query}")  # فك تشفير النص هنا
+    print(f"نتائج البحث عن: {query}")  # عرض النص بدون فك التشفير
     return series
