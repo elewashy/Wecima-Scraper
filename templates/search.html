@@ -635,7 +635,7 @@
 			if (event.key === "Enter") { // تحقق مما إذا كان المفتاح هو "Enter"
 				event.preventDefault(); // منع التصرف الافتراضي (مثل إرسال النموذج)
 				if (input) {
-					window.location.href = `/search/?query=${encodeURIComponent(input)}`; // الانتقال إلى صفحة البحث
+					window.location.href = `/search/${encodeURIComponent(input)}`; // الانتقال إلى صفحة البحث
 				}
 			}
 		}
