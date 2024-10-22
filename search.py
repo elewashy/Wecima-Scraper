@@ -6,12 +6,15 @@ from urllib.parse import quote
 def search_series(query):
     encoded_query = quote(query)
     url = f"https://wecima.movie/search/{encoded_query}/"
-
+    
     response = requests.get(url)
+    if response.status_code != 200:
+        print(f"خطأ في الحصول على البيانات: {response.status_code}")
+        return []
+    
     soup = BeautifulSoup(response.content, "html.parser")
     
     series = []
-    
     series_container = soup.find("div", class_="Grid--WecimaPosts")
     
     if series_container:
