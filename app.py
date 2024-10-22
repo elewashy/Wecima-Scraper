@@ -1,181 +1,165 @@
 from flask import Flask, render_template, request
 import requests
 from bs4 import BeautifulSoup
+from movies import get_arabic_movies, get_english_movies, get_indian_movies, get_turkish_movies, get_documentary_movies, get_full_pack_movies, fetch_movies
+from latest import get_series
+from search import search_series
+from server import scrape, download_view
+from series import get_english_series, get_arabic_series, get_indian_series, get_asian_series, get_turkish_series, get_documentary_series, get_ramadan_series_2024, get_ramadan_series_2023, get_ramadan_series_2022, get_ramadan_series_2021, get_ramadan_series_2020, fetch_series, get_series_episodes
 import re
 
 app = Flask(__name__)
 
-# دالة لجلب البيانات من الموقع
-def get_series(page_number=1):
-    url = f"https://wecima.movie/page/{page_number}/"
-    response = requests.get(url)
-    soup = BeautifulSoup(response.content, "html.parser")
-    
-    series = []
-    
-    # البحث عن القسم الذي يحتوي على المسلسلات
-    series_container = soup.find("div", class_="Grid--WecimaPosts")
-    
-    if series_container:
-        series_elements = series_container.find_all("div", class_="Thumb--GridItem")
 
-        for element in series_elements:
-            title_element = element.find("strong", class_="hasyear")
-            title = title_element.text.strip() if title_element else "عنوان غير متوفر"
-            
-            link_element = element.find("a")
-            link = link_element["href"] if link_element else "#"
-            
-            # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
-            
-            # البحث عن رقم الحلقة
-            episode_element = element.find("div", class_="Episode--number")
-            episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
-            
-            # استخراج رابط الصورة من خاصية data-lazy-style
-            bg_image_element = element.find("span", class_="BG--GridItem")
-            image_url = "رابط صورة غير متوفر"
-            
-            if bg_image_element:
-                lazy_style_value = bg_image_element.get('data-lazy-style', '')
-                image_url_match = re.search(r'url\((.*?)\)', lazy_style_value)
-                if image_url_match:
-                    image_url = image_url_match.group(1).strip('\"')
 
-            series.append({
-                "title": title,
-                "link": link,  # الآن link هو الرابط المعدل
-                "image_url": image_url,
-                "episode": episode
-            })
-    
-    # جلب أرقام الصفحات
-    pagination = []
-    pagination_container = soup.find("div", class_="pagination")
-    
-    if pagination_container:
-        page_links = pagination_container.find_all("li")
-        for page in page_links:
-            link = page.find("a", class_="page-numbers")
-            current_page = page.find("span", class_="current")
-            
-            if link:
-                page_number_text = link.text.strip()
-                page_url = link["href"]
-                is_active = str(page_number) == page_number_text
-                pagination.append({
-                    "number": page_number_text,
-                    "url": page_url,
-                    "active": is_active
-                })
-            elif current_page:
-                pagination.append({
-                    "number": current_page.text.strip(),
-                    "url": "#",
-                    "active": True
-                })
-            else:
-                pagination.append({
-                    "number": page.find("span").text.strip(),
-                    "url": "#",
-                    "active": False
-                })
-
-    return series, pagination
-
-@app.route('/watch/<path:target_url>', methods=['GET'])
-def scrape(target_url):
-    full_url = f"https://wecima.movie/watch/{target_url}"
-
-    headers = {
-        'Referer': 'https://wecima.movie/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
-
-    try:
-        response = requests.get(full_url, headers=headers)
-
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            download_section = soup.find('div', class_='Download--Wecima--Single')
-
-            if download_section:
-                links = download_section.find_all('a', class_='hoverable activable')
-
-                quality_map = {}
-                for link in links:
-                    video_link = link['href']
-                    video_link = video_link.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
-                    
-                    resolution = link.find('resolution').text.strip()
-                    if "1080" in resolution:
-                        quality_map[1080] = video_link
-                    elif "720" in resolution:
-                        quality_map[720] = video_link
-                    elif "480" in resolution:
-                        quality_map[480] = video_link
-                    elif "360" in resolution:
-                        quality_map[360] = video_link
-                    elif "240" in resolution:
-                        quality_map[240] = video_link
-
-                return render_template('template.html', links=quality_map)
-            else:
-                return "Download section not found.", 404
-        else:
-            return "Failed to retrieve the target page.", 500
-    except Exception as e:
-        return str(e), 500
-@app.route('/download/<path:target_url>')
-def download_view(target_url):
-    full_url = f"https://wecima.movie/watch/{target_url}"
-
-    headers = {
-        'Referer': 'https://wecima.movie/',
-        'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
-    }
-
-    try:
-        response = requests.get(full_url, headers=headers)
-        if response.status_code == 200:
-            soup = BeautifulSoup(response.text, 'html.parser')
-            download_section = soup.find('div', class_='Download--Wecima--Single')
-
-            if download_section:
-                links = download_section.find_all('a', class_='hoverable activable')
-
-                quality_map = {}
-                for link in links:
-                    video_link = link['href']
-                    video_link = video_link.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
-                    
-                    resolution = link.find('resolution').text.strip()
-                    if "1080" in resolution:
-                        quality_map[1080] = video_link
-                    elif "720" in resolution:
-                        quality_map[720] = video_link
-                    elif "480" in resolution:
-                        quality_map[480] = video_link
-                    elif "360" in resolution:
-                        quality_map[360] = video_link
-                    elif "240" in resolution:
-                        quality_map[240] = video_link
-
-                return render_template('download_view.html', links=quality_map)
-            else:
-                return "Download section not found.", 404
-        else:
-            return "Failed to retrieve the target page.", 500
-    except Exception as e:
-        return str(e), 500
 
 @app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات
 def index(page_number=1):
     series, pagination = get_series(page_number)  # تمرير رقم الصفحة إلى الدالة
-    return render_template('series.html', series=series, pagination=pagination)
+    page_title = "المضاف حديثا"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/search/') 
+def search():
+    query = request.args.get('query', '')  # الحصول على كلمة البحث من الاستعلام
+    series = search_series(query)  # استدعاء دالة البحث
+    page_title = f"نتائج البحث عن: {query}"
+    return render_template('Series.html', series=series, page_title=page_title)
+
+@app.route('/series/<path:series_name>/')  
+def series_page(series_name):
+    series_data = get_series_episodes(series_name)
+
+    if series_data:
+        page_title = series_data['title']
+        episodes = series_data['episodes']
+        return render_template('series.html', series=episodes, page_title=page_title)
+    else:
+        return "المسلسل غير موجود.", 404
+
+@app.route('/watch/<path:target_url>', methods=['GET'])
+def watch_route(target_url):
+    return scrape(target_url)
+
+@app.route('/download/<path:target_url>')
+def download_route(target_url):
+    return download_view(target_url)
+
+@app.route('/movies/page/<int:page_number>/', methods=['GET'])
+def render_movies(page_number=1):
+    series, pagination = fetch_movies(page_number)
+    page_title = "الأفلام"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/arabic-movies/page/<int:page_number>/', methods=['GET'])
+def arabic_movies(page_number=1):
+    series, pagination = get_arabic_movies(page_number)
+    page_title = "الأفلام العربية "
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/english-movies/page/<int:page_number>/', methods=['GET'])
+def english_movies(page_number=1):
+    series, pagination = get_english_movies(page_number)
+    page_title = "الأفلام الأجنبية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/india-movies/page/<int:page_number>/', methods=['GET'])
+def indian_movies(page_number=1):
+    series, pagination = get_indian_movies(page_number)
+    page_title = "الأفلام هندية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/turkish-movies/page/<int:page_number>/', methods=['GET'])
+def turkish_movies(page_number=1):
+    series, pagination = get_turkish_movies(page_number)
+    page_title = "الأفلام تركية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/documentary-movies/page/<int:page_number>/', methods=['GET'])
+def documentary_movies(page_number=1):
+    series, pagination = get_documentary_movies(page_number)
+    page_title = "الأفلام وثائقية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/full-pack/page/<int:page_number>/', methods=['GET'])
+def full_pack_movies(page_number=1):
+    series, pagination = get_full_pack_movies(page_number)
+    page_title = "سلاسل الأفلام الكاملة"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+###############################Series
+@app.route('/series-1/page/<int:page_number>/', methods=['GET'])
+def render_series(page_number=1):
+    series, pagination = fetch_series(page_number)
+    page_title = "المسلسلات"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/english-series/page/<int:page_number>/', methods=['GET'])
+def english_series(page_number=1):
+    series, pagination = get_english_series(page_number)
+    page_title = "المسلسلات الأجنبية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/arabic-series/page/<int:page_number>/', methods=['GET'])
+def arabic_series(page_number=1):
+    series, pagination = get_arabic_series(page_number)
+    page_title = "المسلسلات العربية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/indian-series/page/<int:page_number>/', methods=['GET'])
+def indian_series(page_number=1):
+    series, pagination = get_indian_series(page_number)
+    page_title = "المسلسلات الهندية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/asian-series/page/<int:page_number>/', methods=['GET'])
+def asian_series(page_number=1):
+    series, pagination = get_asian_series(page_number)
+    page_title = "المسلسلات الآسيوية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/turkish-series/page/<int:page_number>/', methods=['GET'])
+def turkish_series(page_number=1):
+    series, pagination = get_turkish_series(page_number)
+    page_title = "المسلسلات التركية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/documentary-series/page/<int:page_number>/', methods=['GET'])
+def documentary_series(page_number=1):
+    series, pagination = get_documentary_series(page_number)
+    page_title = "المسلسلات الوثائقية"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_series(page_number=1):
+    series, pagination = get_ramadan_series_2024(page_number)
+    page_title = "مسلسلات رمضان 2024"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-2023-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_2023_series(page_number=1):
+    series, pagination = get_ramadan_series_2023(page_number)
+    page_title = "مسلسلات رمضان 2023"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-2022-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_2022_series(page_number=1):
+    series, pagination = get_ramadan_series_2022(page_number)
+    page_title = "مسلسلات رمضان 2022"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-2021-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_2021_series(page_number=1):
+    series, pagination = get_ramadan_series_2021(page_number)
+    page_title = "مسلسلات رمضان 2021"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-2020-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_2020_series(page_number=1):
+    series, pagination = get_ramadan_series_2020(page_number)
+    page_title = "مسلسلات رمضان 2020"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
 if __name__ == '__main__':
     app.run(debug=True)
