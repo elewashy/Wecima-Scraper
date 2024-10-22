@@ -17,11 +17,11 @@ def index(page_number=1):
     page_title = "المضاف حديثا"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-@app.route('/search/<query>')
+@app.route('/search/<query>')  # المسار الآن يعتمد على الكلمة بعد /search/
 def search(query):
-    query_decoded = unquote(query)  # فك ترميز الكلمة البحثية
-    series = search_series(query_decoded)  # البحث عن السلاسل باستخدام النص المفكك
-    return render_template('search.html', series=series, query=query_decoded)
+    series = search_series(query)  # استدعاء دالة البحث باستخدام الكلمة
+    page_title = f"نتائج البحث عن: {query}"
+    return render_template('search.html', series=series, page_title=page_title)
 
 @app.route('/series/<path:series_name>/')  
 def series_page(series_name):
