@@ -170,6 +170,17 @@
             </ul>
         </div>
     </div>
+<style>
+.paginate ul.page-numbers {
+	display: flex;
+	flex-wrap: wrap;
+	/* يجعل العناصر تلتف في صفوف جديدة */
+	justify-content: center;
+	gap: 5px;
+	/* لضبط المسافة بين العناصر */
+}
+</style>
+		
     <div class="paginate">
         <ul class="page-numbers">
             {% for page in pagination %}
