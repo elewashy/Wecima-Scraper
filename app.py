@@ -3,14 +3,12 @@ import requests
 from bs4 import BeautifulSoup
 from movies import get_arabic_movies, get_english_movies, get_indian_movies, get_turkish_movies, get_documentary_movies, get_full_pack_movies, fetch_movies
 from latest import get_series
+from search import search_series
 from server import scrape, download_view
 from series import get_english_series, get_arabic_series, get_indian_series, get_asian_series, get_turkish_series, get_documentary_series, get_ramadan_series_2024, get_ramadan_series_2023, get_ramadan_series_2022, get_ramadan_series_2021, get_ramadan_series_2020, fetch_series, get_series_episodes
 import re
 
 app = Flask(__name__)
-
-
-
 
 @app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات
@@ -19,61 +17,14 @@ def index(page_number=1):
     page_title = "المضاف حديثا"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-def search_series(query):
-    # ترميز الاستعلام للتأكد من أنه مناسب في URL
-    url = f"https://wecima.movie/search/{quote(query)}/"
-    print(f"Fetching URL: {url}")  # طباعة URL للتأكيد
-    response = requests.get(url)
-    
-    # التحقق من حالة الاستجابة
-    if response.status_code != 200:
-        print(f"Error: {response.status_code}")
-        return []
-    
-    soup = BeautifulSoup(response.content, "html.parser")
-    series = []
-    
-    series_container = soup.find("div", class_="Grid--WecimaPosts")
-    if not series_container:
-        print("Series container not found.")
-        return []
-
-    series_elements = series_container.find_all("div", class_="Thumb--GridItem")
-    print(f"Found {len(series_elements)} series elements.")  # طباعة عدد العناصر الموجودة
-    
-    for element in series_elements:
-        title_element = element.find("strong", class_="hasyear")
-        title = title_element.text.strip() if title_element else "عنوان غير متوفر"
-        
-        link_element = element.find("a")
-        link = link_element["href"] if link_element else "#"
-        
-        # معالجة الرابط
-        if link.startswith("https://wecima.movie"):
-            link = link.replace("https://wecima.movie", "")
-        
-        episode_element = element.find("div", class_="Episode--number")
-        episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
-        
-        bg_image_element = element.find("span", class_="BG--GridItem")
-        image_url = "رابط صورة غير متوفر"
-        
-        if bg_image_element:
-            lazy_style_value = bg_image_element.get('data-lazy-style', '')
-            image_url_match = re.search(r'url\((.*?)\)', lazy_style_value)
-            if image_url_match:
-                image_url = image_url_match.group(1).strip('\"')
-
-        series.append({
-            "title": title,
-            "link": link,
-            "image_url": image_url,
-            "episode": episode
-        })
-
-    return series
-
 @app.route('/search/') 
+        <h1>Flask Browser</h1>
+        <p>Enter a URL to start browsing.</p>
+        <form action="/search" id="main-p-search" method="get">
+            <input name="find" placeholder="البحث السريع ..." type="text"/>
+            <button type="submit"><i class="fal fa-search"></i> Search</button>
+        </form>
+
 def search():
     query = request.args.get('query', '')  # الحصول على كلمة البحث من الاستعلام
     series = search_series(query)  # استدعاء دالة البحث
