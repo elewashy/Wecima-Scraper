@@ -1,9 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-import re
+from urllib.parse import quote, unquote
 
 def search_series(query):
-    url = f"https://wecima.movie/search/{query}/"
+    # ترميز الكلمة البحثية
+    query_encoded = quote(query)
+    url = f"https://wecima.movie/search/{query_encoded}/"
     
     try:
         response = requests.get(url)
@@ -29,8 +31,8 @@ def search_series(query):
             link = link_element["href"] if link_element else "#"
             
             # تأكد من أن الرابط يبدأ بـ https://wecima.movie
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if not link.startswith("https://wecima.movie"):
+                link = "https://wecima.movie" + link
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
