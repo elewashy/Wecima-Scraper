@@ -46,4 +46,6 @@ def search_series(query):
                 "episode": episode
             })
 
+    # عرض النص بشكل صحيح
+    print(f"نتائج البحث عن: {unquote(query)}")  # فك تشفير النص هنا
     return series
