@@ -1,20 +1,21 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from urllib.parse import quote
 
 def search_series(query):
-    encoded_query = quote(query)
-    url = f"https://wecima.movie/search/{encoded_query}/"
+    url = f"https://wecima.movie/search/{query}/"
     
-    response = requests.get(url)
-    if response.status_code != 200:
-        print(f"خطأ في الحصول على البيانات: {response.status_code}")
-        return []
+    try:
+        response = requests.get(url)
+        response.raise_for_status()  # أثار استثناء إذا كان هناك خطأ في الطلب
+    except requests.exceptions.RequestException as e:
+        print(f"Error fetching data from {url}: {e}")
+        return []  # ارجع قائمة فارغة في حال حدوث خطأ
     
     soup = BeautifulSoup(response.content, "html.parser")
     
     series = []
+    
     series_container = soup.find("div", class_="Grid--WecimaPosts")
     
     if series_container:
@@ -27,6 +28,7 @@ def search_series(query):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
+            # تأكد من أن الرابط يبدأ بـ https://wecima.movie
             if link.startswith("https://wecima.movie"):
                 link = link.replace("https://wecima.movie", "")
             
@@ -48,5 +50,7 @@ def search_series(query):
                 "image_url": image_url,
                 "episode": episode
             })
-
+    else:
+        print("No series container found in the response.")
+    
     return series
