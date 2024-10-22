@@ -18,13 +18,6 @@ def index(page_number=1):
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
 @app.route('/search/') 
-        <h1>Flask Browser</h1>
-        <p>Enter a URL to start browsing.</p>
-        <form action="/search" id="main-p-search" method="get">
-            <input name="find" placeholder="البحث السريع ..." type="text"/>
-            <button type="submit"><i class="fal fa-search"></i> Search</button>
-        </form>
-
 def search():
     query = request.args.get('query', '')  # الحصول على كلمة البحث من الاستعلام
     series = search_series(query)  # استدعاء دالة البحث
