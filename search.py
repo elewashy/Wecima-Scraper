@@ -1,10 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
 import re
+from urllib.parse import quote
 
 def search_series(query):
-    # الرابط سيكون بالشكل الذي تريده، مع وضع الكلمة التي تبحث عنها مباشرة بعد /search/
-    url = f"https://wecima.movie/search/{query}"
+    query_encoded = quote(query)
+    url = f"https://wecima.movie/search/{query_encoded}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
