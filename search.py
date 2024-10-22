@@ -1,19 +1,11 @@
 import requests
 from bs4 import BeautifulSoup
-from urllib.parse import quote, unquote
+import re
 
 def search_series(query):
-    # ترميز الكلمة البحثية
-    query_encoded = quote(query)
-    url = f"https://wecima.movie/search/{query_encoded}/"
-    
-    try:
-        response = requests.get(url)
-        response.raise_for_status()  # أثار استثناء إذا كان هناك خطأ في الطلب
-    except requests.exceptions.RequestException as e:
-        print(f"Error fetching data from {url}: {e}")
-        return []  # ارجع قائمة فارغة في حال حدوث خطأ
-    
+    # الرابط سيكون بالشكل الذي تريده، مع وضع الكلمة التي تبحث عنها مباشرة بعد /search/
+    url = f"https://wecima.movie/search/{query}"
+    response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
     series = []
@@ -30,9 +22,8 @@ def search_series(query):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            # تأكد من أن الرابط يبدأ بـ https://wecima.movie
-            if not link.startswith("https://wecima.movie"):
-                link = "https://wecima.movie" + link
+            if link.startswith("https://wecima.movie"):
+                link = link.replace("https://wecima.movie", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -52,7 +43,5 @@ def search_series(query):
                 "image_url": image_url,
                 "episode": episode
             })
-    else:
-        print("No series container found in the response.")
-    
+
     return series
