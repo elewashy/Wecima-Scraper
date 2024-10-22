@@ -4,9 +4,10 @@ import re
 from urllib.parse import quote
 
 def search_series(query):
-    query_encoded = quote(query)
+    query_encoded = quote(query)  # تشفير الاستعلام
     url = f"https://wecima.movie/search/{query_encoded}/"
     response = requests.get(url)
+    response.encoding = 'utf-8'  # التأكد من أن الترميز صحيح
     soup = BeautifulSoup(response.content, "html.parser")
     
     series = []
