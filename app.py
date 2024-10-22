@@ -21,7 +21,7 @@ def index(page_number=1):
 def search(query):
     series = search_series(query)  # استدعاء دالة البحث باستخدام الكلمة
     page_title = f"نتائج البحث عن: {query}"
-    return render_template('Series.html', series=series, page_title=page_title)
+    return render_template('search.html', series=series, page_title=page_title)
 
 @app.route('/series/<path:series_name>/')  
 def series_page(series_name):
