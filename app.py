@@ -20,12 +20,19 @@ def index(page_number=1):
     page_title = "المضاف حديثا"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-@app.route('/search/') 
+@app.route('/search/')
 def search():
-    query = request.args.get('query', '')  # الحصول على كلمة البحث من الاستعلام
+    query = request.args.get('query', '').strip()  # الحصول على كلمة البحث من الاستعلام وإزالة الفراغات
     series = search_series(query)  # استدعاء دالة البحث
     page_title = f"نتائج البحث عن: {query}"
-    return render_template('Series.html', series=series, page_title=page_title)
+
+    # تحقق مما إذا كانت هناك نتائج
+    if not series:
+        message = "لا توجد نتائج للبحث."
+    else:
+        message = ""
+
+    return render_template('Series.html', series=series, page_title=page_title, message=message)
 
 @app.route('/series/<path:series_name>/')  
 def series_page(series_name):
