@@ -1,7 +1,7 @@
 import requests
 from bs4 import BeautifulSoup
 import re
-from urllib.parse import quote
+from urllib.parse import quote, unquote
 
 def search_series(query):
     query_encoded = quote(query)  # تشفير الاستعلام
@@ -19,8 +19,8 @@ def search_series(query):
 
         for element in series_elements:
             title_element = element.find("strong", class_="hasyear")
-            title = title_element.text.strip() if title_element else "عنوان غير متوفر"
-            
+            title = title_element.get_text(strip=True) if title_element else "عنوان غير متوفر"
+
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
@@ -28,7 +28,7 @@ def search_series(query):
                 link = link.replace("https://wecima.movie", "")
             
             episode_element = element.find("div", class_="Episode--number")
-            episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
+            episode = episode_element.get_text(strip=True).replace("حلقة", "").strip() if episode_element else None
             
             bg_image_element = element.find("span", class_="BG--GridItem")
             image_url = "رابط صورة غير متوفر"
