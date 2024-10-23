@@ -4,8 +4,6 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>تحميل الفيديو</title>
-    <link rel="stylesheet" href="https://egyfilm-app.vercel.app/assets/css/plyr.css" />
-    <script src="https://egyfilm-app-server.vercel.app/assets/js/fluidplayer.min.js"></script>
     <style>
         body {
             margin: 0;
@@ -39,23 +37,6 @@
 </head>
 <body>
     <h1>تحميل الفيديو</h1>
-    <video id='player' controls>
-        {% if links_watch[1080] %}
-            <source src='{{ links_watch[1080] }}' type='video/mp4' size='1080'>
-        {% endif %}
-        {% if links_watch[720] %}
-            <source src='{{ links_watch[720] }}' type='video/mp4' size='720'>
-        {% endif %}
-        {% if links_watch[480] %}
-            <source src='{{ links_watch[480] }}' type='video/mp4' size='480'>
-        {% endif %}
-        {% if links_watch[360] %}
-            <source src='{{ links_watch[360] }}' type='video/mp4' size='360'>
-        {% endif %}
-        {% if links_watch[240] %}
-            <source src='{{ links_watch[240] }}' type='video/mp4' size='240'>
-        {% endif %}
-    </video>
     
     <div id="download-links" style="display: none; margin-top: 30px; text-align: center;">
         {% if links_watch[1080] %}
