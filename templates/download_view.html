@@ -40,41 +40,88 @@
 <body>
     <h1>تحميل الفيديو</h1>
     <video id='player' controls>
-        {% if links[1080] %}
-            <source src='{{ links[1080] }}' type='video/mp4' size='1080'>
+        {% if links_watch[1080] %}
+            <source src='{{ links_watch[1080] }}' type='video/mp4' size='1080'>
         {% endif %}
-        {% if links[720] %}
-            <source src='{{ links[720] }}' type='video/mp4' size='720'>
+        {% if links_watch[720] %}
+            <source src='{{ links_watch[720] }}' type='video/mp4' size='720'>
         {% endif %}
-        {% if links[480] %}
-            <source src='{{ links[480] }}' type='video/mp4' size='480'>
+        {% if links_watch[480] %}
+            <source src='{{ links_watch[480] }}' type='video/mp4' size='480'>
         {% endif %}
-        {% if links[360] %}
-            <source src='{{ links[360] }}' type='video/mp4' size='360'>
+        {% if links_watch[360] %}
+            <source src='{{ links_watch[360] }}' type='video/mp4' size='360'>
         {% endif %}
-        {% if links[240] %}
-            <source src='{{ links[240] }}' type='video/mp4' size='240'>
+        {% if links_watch[240] %}
+            <source src='{{ links_watch[240] }}' type='video/mp4' size='240'>
         {% endif %}
     </video>
     
-    <div>
-        {% if links[1080] %}
-        <a href="{{ links[1080] }}" class="download-button">1080p</a>
+    <div id="download-links" style="display: none; margin-top: 30px; text-align: center;">
+        {% if links_watch[1080] %}
+        <a href="{{ links_watch[1080] }}" class="download-button">1080p</a>
         {% endif %}
-        {% if links[720] %}
-        <a href="{{ links[720] }}" class="download-button">720p</a>
+        {% if links_watch[720] %}
+        <a href="{{ links_watch[720] }}" class="download-button">720p</a>
         {% endif %}
-        {% if links[480] %}
-        <a href="{{ links[480] }}" class="download-button">480p</a>
+        {% if links_watch[480] %}
+        <a href="{{ links_watch[480] }}" class="download-button">480p</a>
         {% endif %}
-        {% if links[360] %}
-        <a href="{{ links[360] }}" class="download-button">360p</a>
+        {% if links_watch[360] %}
+        <a href="{{ links_watch[360] }}" class="download-button">360p</a>
         {% endif %}
-        {% if links[240] %}
-        <a href="{{ links[240] }}" class="download-button">240p</a>
+        {% if links_watch[240] %}
+        <a href="{{ links_watch[240] }}" class="download-button">240p</a>
         {% endif %}
     </div>
-
+    
+    <div id="countdown-container" style="display: flex; justify-content: center; margin-top: 20px;">
+        <div id="countdown-circle">
+            <span id="countdown-text">10</span>
+        </div>
+    </div>
+    
+    <style>
+        #countdown-circle {
+            width: 100px;
+            height: 100px;
+            border: 5px solid #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            position: relative;
+        }
+        
+        #countdown-text {
+            font-size: 24px;
+            color: #1973ce;
+        }
+    </style>
+    
+    <script>
+        // تعيين العداد على 10 ثواني
+        var timeLeft = 10;
+        var countdownText = document.getElementById('countdown-text');
+        var countdownContainer = document.getElementById('countdown-container');
+    
+        // تحديث العداد كل ثانية
+        var timer = setInterval(function() {
+            countdownText.textContent = timeLeft; // تحديث النص داخل الدائرة
+            timeLeft--;
+    
+            // عندما ينتهي العداد
+            if (timeLeft < 0) {
+                clearInterval(timer);
+                countdownContainer.style.display = 'none'; // إخفاء الدائرة
+                document.getElementById('download-links').style.display = 'block'; // إظهار الروابط
+            }
+        }, 1000); // تحديث كل ثانية (1000 ملي ثانية)
+    </script>
+        
     <script>
         const player = new Plyr('#player');
     </script>
