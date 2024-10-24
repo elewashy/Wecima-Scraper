@@ -37,7 +37,7 @@ def scrape(target_url):
                     video_link_watch = link['href']
                     
                     # رابط التحميل: استبدال الدومين وتعديل "watch" إلى "download"
-                    video_link_download = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
+                    video_link_watch = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
 
                     # استخراج الجودة
                     resolution = link.find('resolution').text.strip()
@@ -105,7 +105,7 @@ def download_view(target_url):
                     video_link_watch = link['href']
                     
                     # رابط التحميل: استبدال الدومين وتعديل "watch" إلى "download"
-                    video_link_download = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
+                    video_link_watch = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
 
                     # استخراج الجودة
                     resolution = link.find('resolution').text.strip()
