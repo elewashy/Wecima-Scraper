@@ -9,9 +9,6 @@ headers = {
 
 video_url = "https://deva-cpmav9sk6x25.cimanowtv.com/uploads/2022/11/10/_Cima-Now.CoM_%20Al.Nadaha.Siwa.2022.HD/%5BCima-Now.CoM%5D%20Al.Nadaha.Siwa.2022.HD-480p.mp4"
 
-@app.route('/')
-def index():
-    return render_template('download_view.html', video_url=video_url)
 
 if __name__ == '__main__':
     app.run(debug=True)
