@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تحميل الفيديو</title>
+    <link rel="stylesheet" href="https://egyfilm-app.vercel.app/assets/css/plyr.css" />
+    <link rel="stylesheet" href="https://egyfilm-app.vercel.app/assets/css/fluidplayer.min.css" type="text/css" />
+    <script src="https://egyfilm-app.vercel.app/assets/js/plyr.js"></script>
+    <script src="https://egyfilm-app-server.vercel.app/assets/js/fluidplayer.min.js"></script>
+    <style>
+        body {
+            margin: 0;
+            background-color: black;
+            color: white;
+            font-family: Arial, sans-serif;
+            text-align: center;
+        }
+        .download-button {
+            display: inline-block;
+            margin: 15px;
+            padding: 15px 35px;
+            background: linear-gradient(135deg, #0066ff, #0099ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 50px;
+            font-size: 20px;
+            font-weight: bold;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
+            transition: all 0.3s ease;
+        }
+        .download-button:hover {
+            background: linear-gradient(135deg, #005ce6, #0088cc);
+            box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
+            transform: translateY(-3px);
+        }
+    </style>
+</head>
+<body>
+    <h1>تحميل الفيديو</h1>
+    <video id='player' controls>
+            <source src='{{ video_url }}' type='video/mp4' size='1080'>
+    </video>
+    
+    <div id="download-links" style="display: none; margin-top: 30px; text-align: center;">
+        <a href="{{ video_url }}" class="download-button">1080p</a>
+    </div>
+    
+    <div id="countdown-container" style="display: flex; justify-content: center; margin-top: 20px;">
+        <div id="countdown-circle">
+            <span id="countdown-text">10</span>
+        </div>
+    </div>
+    
+    <style>
+        #countdown-circle {
+            width: 100px;
+            height: 100px;
+            border: 5px solid #3498db;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: bold;
+            color: #3498db;
+            position: relative;
+        }
+        
+        #countdown-text {
+            font-size: 24px;
+            color: #1973ce;
+        }
+    </style>
+    
+    <script>
+        // تعيين العداد على 10 ثواني
+        var timeLeft = 10;
+        var countdownText = document.getElementById('countdown-text');
+        var countdownContainer = document.getElementById('countdown-container');
+    
+        // تحديث العداد كل ثانية
+        var timer = setInterval(function() {
+            countdownText.textContent = timeLeft; // تحديث النص داخل الدائرة
+            timeLeft--;
+    
+            // عندما ينتهي العداد
+            if (timeLeft < 0) {
+                clearInterval(timer);
+                countdownContainer.style.display = 'none'; // إخفاء الدائرة
+                document.getElementById('download-links').style.display = 'block'; // إظهار الروابط
+            }
+        }, 1000); // تحديث كل ثانية (1000 ملي ثانية)
+    </script>
+        
+    <script>
+        const player = new Plyr('#player');
+    </script>
+</body>
+</html>
