@@ -101,6 +101,33 @@
                 document.getElementById('download-links').style.display = 'block'; // إظهار الروابط
             }
         }, 1000); // تحديث كل ثانية (1000 ملي ثانية)
+          // التحقق مما إذا كان المستخدم يستخدم جهاز كمبيوتر
+  function isDesktop() {
+    return !/Mobi|Android/i.test(navigator.userAgent);  // إذا كان لا يحتوي على "Mobile" أو "Android" في userAgent
+  }
+
+  // إزالة intent:// و #Intent;scheme=https;end; إذا كان الجهاز كمبيوتر
+  function modifyLinks() {
+    if (isDesktop()) {
+      // الحصول على جميع الروابط في الصفحة
+      const links = document.querySelectorAll('a[href*="intent://"]');
+      
+      // تعديل كل رابط
+      links.forEach(link => {
+        let href = link.getAttribute('href');
+        
+        // إزالة intent:// من بداية الرابط و #Intent;scheme=https;end; من نهايته
+        href = href.replace('intent://', '').replace('#Intent;scheme=https;end;', '');
+        
+        // تعيين الرابط المعدل
+        link.setAttribute('href', href);
+      });
+    }
+  }
+
+  // تنفيذ التعديل عندما يتم تحميل الصفحة
+  window.onload = modifyLinks;
+
     </script>
         
     <script>
