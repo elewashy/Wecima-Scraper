@@ -2,7 +2,6 @@ from flask import Flask, render_template, request
 import requests
 from bs4 import BeautifulSoup
 
-#######################################Watch
 def scrape(target_url):
     full_url = f"https://wecima.movie/watch/{target_url}"
 
@@ -16,60 +15,51 @@ def scrape(target_url):
 
         if response.status_code == 200:
             soup = BeautifulSoup(response.text, 'html.parser')
-            download_section = soup.find('div', class_='Download--Wecima--Single')
+            download_container = soup.find('div', class_='Download--Wecima--Single')
+            
+            quality_map_watch = {}
+            quality_map_season_download = {}
 
-            if download_section:
-                links = download_section.find_all('a', class_='hoverable activable')
+            sections = download_container.find_all('ul', class_='List--Download--Wecima--Single')
+            for section in sections:
+                previous_element = section.find_previous_sibling()
+                
+                if previous_element and previous_element.name == "titleshape" and "سيرفرات التحميل" in previous_element.text:
+                    current_map = quality_map_watch
+                elif previous_element and previous_element.name == "div" and "SeasonDownload" in previous_element.get("class", []):
+                    current_map = quality_map_season_download
+                else:
+                    continue
 
-                # تخزين روابط المشاهدة فقط في هذا القاموس
-                quality_map_watch = {}
-                # تخزين روابط التحميل (بعد استبدال "watch" بـ "download") في هذا القاموس
-                quality_map_download = {}
-                
-                # الرابط الحالي للصفحة
-                current_url = request.url
-                
-                # استبدال "watch" بـ "download" في الرابط الحالي
-                download_url = current_url.replace('/watch/', '/download/')
-                
+                links = section.find_all('a', class_='hoverable activable')
                 for link in links:
-                    # رابط المشاهدة
-                    video_link_watch = link['href']
+                    video_link = link['href']
+                    video_link = video_link.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
                     
-                    # رابط التحميل: استبدال الدومين وتعديل "watch" إلى "download"
-                    video_link_watch = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
-
-                    # استخراج الجودة
                     resolution = link.find('resolution').text.strip()
-                    
-                    # تحديد الروابط بناءً على الجودة
-                    if "1080" in resolution:
-                        quality_map_watch[1080] = video_link_watch
-                        quality_map_download[1080] = download_url
-                    elif "720" in resolution:
-                        quality_map_watch[720] = video_link_watch
-                        quality_map_download[720] = download_url
-                    elif "480" in resolution:
-                        quality_map_watch[480] = video_link_watch
-                        quality_map_download[480] = download_url
-                    elif "360" in resolution:
-                        quality_map_watch[360] = video_link_watch
-                        quality_map_download[360] = download_url
-                    elif "240" in resolution:
-                        quality_map_watch[240] = video_link_watch
-                        quality_map_download[240] = download_url
 
-                # تمرير روابط المشاهدة والتحميل للقالب
-                return render_template('template.html', 
-                                       links_watch=quality_map_watch, 
-                                       links_download=quality_map_download)
-            else:
-                return "Download section not found.", 404
+                    # استبدال "watch" بـ "download" في الرابط
+                    download_link = f"{request.path.replace('watch', 'download')}"
+                    
+                    if "1080" in resolution:
+                        current_map[1080] = download_link
+                    elif "720" in resolution:
+                        current_map[720] = download_link
+                    elif "480" in resolution:
+                        current_map[480] = download_link
+                    elif "360" in resolution:
+                        current_map[360] = download_link
+                    elif "240" in resolution:
+                        current_map[240] = download_link
+
+            return render_template('template.html', 
+                                   links_watch=quality_map_watch, 
+                                   links_download=quality_map_watch, 
+                                   links_season_download=quality_map_season_download)
         else:
             return "Failed to retrieve the target page.", 500
     except Exception as e:
         return str(e), 500
-
 ##########################################################Download
 def download_view(target_url):
     full_url = f"https://wecima.movie/watch/{target_url}"
@@ -87,50 +77,63 @@ def download_view(target_url):
             download_section = soup.find('div', class_='Download--Wecima--Single')
 
             if download_section:
-                links = download_section.find_all('a', class_='hoverable activable')
-
-                # تخزين روابط المشاهدة فقط في هذا القاموس
+                # قاموسين للسيرفرات العادية
                 quality_map_watch = {}
-                # تخزين روابط التحميل (بعد استبدال "watch" بـ "download") في هذا القاموس
                 quality_map_download = {}
                 
-                # الرابط الحالي للصفحة
-                current_url = request.url
-                
-                # استبدال "watch" بـ "download" في الرابط الحالي
-                download_url = current_url.replace('/watch/', '/download/')
-                
-                for link in links:
-                    # رابط المشاهدة
-                    video_link_watch = link['href']
-                    
-                    # رابط التحميل: استبدال الدومين وتعديل "watch" إلى "download"
-                    video_link_watch = video_link_watch.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
+                # قاموسين لتحميل الموسم كامل
+                season_links_watch = {}
+                season_links_download = {}
 
-                    # استخراج الجودة
-                    resolution = link.find('resolution').text.strip()
-                    
-                    # تحديد الروابط بناءً على الجودة
-                    if "1080" in resolution:
-                        quality_map_watch[1080] = video_link_watch
-                        quality_map_download[1080] = download_url
-                    elif "720" in resolution:
-                        quality_map_watch[720] = video_link_watch
-                        quality_map_download[720] = download_url
-                    elif "480" in resolution:
-                        quality_map_watch[480] = video_link_watch
-                        quality_map_download[480] = download_url
-                    elif "360" in resolution:
-                        quality_map_watch[360] = video_link_watch
-                        quality_map_download[360] = download_url
-                    elif "240" in resolution:
-                        quality_map_watch[240] = video_link_watch
-                        quality_map_download[240] = download_url
+                # الحصول على روابط التحميل داخل الأقسام
+                sections = download_section.find_all('ul', class_='List--Download--Wecima--Single')
+                
+                # تحديد القسم بناءً على تواجد "SeasonDownload"
+                for i, section in enumerate(sections):
+                    is_season_download = section.find_previous_sibling('div', class_='SeasonDownload') is not None
+                    links = section.find_all('a', class_='hoverable activable')
 
-                # تمرير روابط المشاهدة والتحميل للقالب
-                return render_template('download_view.html', 
-                                       links_watch=quality_map_watch, 
-                                       links_download=quality_map_download)
+                    for link in links:
+                        video_link = link['href']
+                        video_link = video_link.replace("https://tgb4.top15top.shop", "https://uupbom.com/")
+                        
+                        resolution = link.find('resolution').text.strip()
+
+                        # إضافة الروابط للقاموس المناسب بناءً على الجودة
+                        if "1080" in resolution:
+                            if is_season_download:
+                                season_links_watch[1080] = video_link
+                            else:
+                                quality_map_watch[1080] = video_link
+                        elif "720" in resolution:
+                            if is_season_download:
+                                season_links_watch[720] = video_link
+                            else:
+                                quality_map_watch[720] = video_link
+                        elif "480" in resolution:
+                            if is_season_download:
+                                season_links_watch[480] = video_link
+                            else:
+                                quality_map_watch[480] = video_link
+                        elif "360" in resolution:
+                            if is_season_download:
+                                season_links_watch[360] = video_link
+                            else:
+                                quality_map_watch[360] = video_link
+                        elif "240" in resolution:
+                            if is_season_download:
+                                season_links_watch[240] = video_link
+                            else:
+                                quality_map_watch[240] = video_link
+
+                # تمرير الروابط للقالب بعد تقسيمها
+                return render_template(
+                    'download_view.html',
+                    links_watch=quality_map_watch,
+                    links_download=quality_map_download,
+                    season_links_watch=season_links_watch,
+                    season_links_download=season_links_download
+                )
             else:
                 return "Download section not found.", 404
         else:

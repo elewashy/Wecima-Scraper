@@ -9,9 +9,6 @@ from series import get_english_series, get_arabic_series, get_indian_series, get
 import re
 
 app = Flask(__name__)
-@app.route('/video')
-def video():
-    return render_template('video.html', video_url=video_url)
 
 @app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات

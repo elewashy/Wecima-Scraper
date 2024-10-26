@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>تحميل الفيديو</title>
+    <title>سيرفرات التحميل</title>
     <style>
         body {
             margin: 0;
@@ -36,9 +36,10 @@
     </style>
 </head>
 <body>
-    <h1>تحميل الفيديو</h1>
+    <h1>سيرفرات التحميل</h1>
     
     <div id="download-links" style="display: none; margin-top: 30px; text-align: center;">
+        <h3 style="margin-top: 25px;">روابط التحميل</h3>
         {% if links_watch[1080] %}
         <a href="{{ links_watch[1080] }}" class="download-button">1080p</a>
         {% endif %}
@@ -54,8 +55,25 @@
         {% if links_watch[240] %}
         <a href="{{ links_watch[240] }}" class="download-button">240p</a>
         {% endif %}
-    </div>
     
+        <h3 style="margin-top: 25px;">تحميل الموسم كامل</h3>
+        {% if season_links_watch[1080] %}
+        <a href="{{ season_links_watch[1080] }}" class="download-button">1080p</a>
+        {% endif %}
+        {% if season_links_watch[720] %}
+        <a href="{{ season_links_watch[720] }}" class="download-button">720p</a>
+        {% endif %}
+        {% if season_links_watch[480] %}
+        <a href="{{ season_links_watch[480] }}" class="download-button">480p</a>
+        {% endif %}
+        {% if season_links_watch[360] %}
+        <a href="{{ season_links_watch[360] }}" class="download-button">360p</a>
+        {% endif %}
+        {% if season_links_watch[240] %}
+        <a href="{{ season_links_watch[240] }}" class="download-button">240p</a>
+        {% endif %}
+    </div>
+        
     <div id="countdown-container" style="display: flex; justify-content: center; margin-top: 20px;">
         <div id="countdown-circle">
             <span id="countdown-text">10</span>
