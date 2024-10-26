@@ -17,11 +17,14 @@ def scrape(target_url):
             soup = BeautifulSoup(response.text, 'html.parser')
             download_container = soup.find('div', class_='Download--Wecima--Single')
             
+            # قواميس لتخزين الروابط حسب القسم
             quality_map_watch = {}
             quality_map_season_download = {}
 
+            # العثور على جميع أقسام التحميل وتحديد القسم المناسب
             sections = download_container.find_all('ul', class_='List--Download--Wecima--Single')
             for section in sections:
+                # فحص ما إذا كانت العنوان السابق "سيرفرات التحميل" أو "تحميل الموسم كامل"
                 previous_element = section.find_previous_sibling()
                 
                 if previous_element and previous_element.name == "titleshape" and "سيرفرات التحميل" in previous_element.text:
@@ -31,6 +34,7 @@ def scrape(target_url):
                 else:
                     continue
 
+                # استخراج الروابط داخل القسم الحالي
                 links = section.find_all('a', class_='hoverable activable')
                 for link in links:
                     video_link = link['href']
@@ -38,24 +42,28 @@ def scrape(target_url):
                     
                     resolution = link.find('resolution').text.strip()
 
-                    # استبدال "watch" بـ "download" في الرابط
-                    download_link = f"{request.path.replace('watch', 'download')}"
-                    
+                    # تخزين الروابط بناءً على الجودة
                     if "1080" in resolution:
-                        current_map[1080] = download_link
+                        current_map[1080] = video_link
                     elif "720" in resolution:
-                        current_map[720] = download_link
+                        current_map[720] = video_link
                     elif "480" in resolution:
-                        current_map[480] = download_link
+                        current_map[480] = video_link
                     elif "360" in resolution:
-                        current_map[360] = download_link
+                        current_map[360] = video_link
                     elif "240" in resolution:
-                        current_map[240] = download_link
+                        current_map[240] = video_link
 
+            # تحويل الروابط إلى الشكل المطلوب
+            links_download = {quality: f"/download/{target_url}" for quality in quality_map_watch.keys()}
+            links_season_download = {quality: f"/download/{target_url}" for quality in quality_map_season_download.keys()}
+
+            # تمرير القواميس المختلفة للقالب
             return render_template('template.html', 
                                    links_watch=quality_map_watch, 
-                                   links_download=quality_map_watch, 
-                                   links_season_download=quality_map_season_download)
+                                   links_download=links_download, 
+                                   links_season_download=links_season_download)
+        
         else:
             return "Failed to retrieve the target page.", 500
     except Exception as e:
