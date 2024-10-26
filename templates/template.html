@@ -13,48 +13,37 @@
             color: white;
             font-family: Arial, sans-serif;
         }
-
-        video {
-            width: 100%;
-            height: auto;
-            max-width: 600px;
-            margin: 0 auto;
-            display: block;
-        }
-
         .download-button {
             display: inline-block;
-            margin: 15px 5px;
-            padding: 10px 25px;
+            margin: 15px;
+            padding: 15px 35px;
             background: linear-gradient(135deg, #0066ff, #0099ff);
             color: white;
             text-decoration: none;
             border-radius: 50px;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: bold;
             box-shadow: 0 8px 15px rgba(0, 0, 0, 0.3);
             transition: all 0.3s ease;
         }
-
         .download-button:hover {
             background: linear-gradient(135deg, #005ce6, #0088cc);
             box-shadow: 0 12px 20px rgba(0, 0, 0, 0.4);
             transform: translateY(-3px);
         }
-
-        /* تحسينات لأحجام الشاشات الصغيرة */
-        @media (max-width: 600px) {
-            .download-button {
-                padding: 10px 20px;
-                font-size: 16px;
-                margin: 10px 3px;
-            }
+                /* تحسينات لأحجام الشاشات الصغيرة */
+                @media (max-width: 600px) {
+                    .download-button {
+            padding: 20px 45px;
+            font-size: 24px;
+        }
 
             video {
                 max-width: 100%;
                 height: auto;
             }
         }
+
     </style>
 </head>
 <body>
