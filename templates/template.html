@@ -53,19 +53,19 @@
 
 <div style="margin-top: 30px; text-align: center;">
     {% if links_download[1080] %}
-    <a href="{{ links_download[1080]}}" class="download-button">1080p</a>
+    <a href="intent://{{ links_download[1080].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">1080p</a>
     {% endif %}
     {% if links_download[720] %}
-    <a href="{{ links_download[720]}}" class="download-button">720p</a>
+    <a href="intent://{{ links_download[720].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">720p</a>
     {% endif %}
     {% if links_download[480] %}
-    <a href="{{ links_download[480]}}" class="download-button">480p</a>
+    <a href="intent://{{ links_download[480].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">480p</a>
     {% endif %}
     {% if links_download[360] %}
-    <a href="{{ links_download[360]}}" class="download-button">360p</a>
+    <a href="intent://{{ links_download[360].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">360p</a>
     {% endif %}
     {% if links_download[240] %}
-    <a href="{{ links_download[240]}}" class="download-button">240p</a>
+    <a href="intent://{{ links_download[240].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">240p</a>
     {% endif %}
 </div>
 
