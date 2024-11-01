@@ -58,11 +58,24 @@ def scrape(target_url):
             links_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_watch.keys()}
             links_season_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_season_download.keys()}
 
-            # تمرير القواميس المختلفة للقالب
-            return render_template('template.html', 
-                                   links_watch=quality_map_watch, 
-                                   links_download=links_download, 
-                                   links_season_download=links_season_download)
+            # استخراج روابط الحلقات
+            episode_links = []
+            episodes_container = soup.find('div', class_='Seasons--Episodes')
+            if episodes_container:
+                episodes = episodes_container.find_all('a', class_='hoverable activable')
+                for episode in episodes:
+                    episode_url = episode['href'].replace("https://wecima.movie", "")  # إزالة الدومين
+                    episode_title = episode.find('episodetitle').text.strip()
+                    episode_links.append({'url': episode_url, 'title': episode_title})
+
+            # تمرير الروابط للقالب
+            return render_template(
+                'template.html',
+                links_watch=quality_map_watch,
+                links_download=links_download,
+                links_season_download=links_season_download,
+                episode_links=episode_links
+            )
         
         else:
             return "Failed to retrieve the target page.", 500
@@ -134,13 +147,24 @@ def download_view(target_url):
                             else:
                                 quality_map_watch[240] = video_link
 
+                # استخراج روابط الحلقات وتعديل الروابط
+                episode_links = []
+                episodes_container = soup.find('div', class_='Seasons--Episodes')
+                if episodes_container:
+                    episodes = episodes_container.find_all('a', class_='hoverable activable')
+                    for episode in episodes:
+                        episode_url = episode['href'].replace("https://wecima.movie", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
+                        episode_title = episode.find('episodetitle').text.strip()
+                        episode_links.append({'url': episode_url, 'title': episode_title})
+
                 # تمرير الروابط للقالب بعد تقسيمها
                 return render_template(
                     'download_view.html',
                     links_watch=quality_map_watch,
                     links_download=quality_map_download,
                     season_links_watch=season_links_watch,
-                    season_links_download=season_links_download
+                    season_links_download=season_links_download,
+                    episode_links=episode_links  # تمرير روابط الحلقات المعدلة للقالب
                 )
             else:
                 return "Download section not found.", 404
