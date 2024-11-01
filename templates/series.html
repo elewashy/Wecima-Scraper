@@ -678,44 +678,31 @@
 				<h2>{{ page_title }}</h2>
 			</div>
 			<ul class="Posts--List SixInRow">
-				{% if series_data.seasons %}
-					{% for season in series_data.seasons %}
-						<div class="Small--Box">
-							<a href="{{ season.link }}" class="recent--block">
-								<div class="ribbon">{{ season.title }}</div> <!-- يظهر رقم الموسم -->
-								<div class="Poster">
-									<img src="{{ season.image_url }}" alt="{{ season.title }}" />
-								</div>
-								<i class="fa-brands fa-google-play playIcon"></i>
-								<h3 class="title">{{page_title + ' ' + season.title }}</h3>
-							</a>
-						</div>
-					{% endfor %}
-				{% endif %}
-			
 				{% if series %}
-					{% for item in series %}
-						<div class="Small--Box">
-							<a href="{{ item.link }}" title="{{ item.title }}" class="recent--block">
-								{% if item.quality %}
-									<div class="ribbon">{{ item.quality }}</div>
-								{% endif %}
-								{% if item.episode %}
-									<div class="number"><span>حلقة</span>{{ item.episode }}</div>
-								{% endif %}
-								<div class="Poster">
-									<img src="{{ item.image_url }}" alt="{{ item.title }}" />
-								</div>
-								<i class="fa-brands fa-google-play playIcon"></i>
-								<h3 class="title">{{ page_title + ' ' + item.title }}</h3>
-							</a>
+				{% for item in series %}
+				<div class="Small--Box">
+					<a href="{{ item.link }}" title="{{ item.title }}" class="recent--block">
+						{% if item.quality %}
+						<div class="ribbon">{{ item.quality }}</div>
+						{% endif %}
+						{% if item.episode %}
+						<div class="number"><span>حلقة</span>{{ item.episode }}</div>
+						{% endif %}
+						<div class="Poster">
+							<img src="{{ item.image_url }}" alt="{{ item.title }}" />
 						</div>
-					{% endfor %}
+						<i class="fa-brands fa-google-play playIcon"></i>
+						<ul class="liList">
+						</ul>
+						<h3 class="title">{{ item.title }}</h3>
+					</a>
+				</div>
+				{% endfor %}
 				{% else %}
-					<p>لا توجد نتائج مطابقة لبحثك.</p>
+				<p>لا توجد نتائج مطابقة لبحثك.</p>
 				{% endif %}
 			</ul>
-					</div>
+		</div>
 	</div>
 	<style>
 		.paginate ul.page-numbers {

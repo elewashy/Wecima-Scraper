@@ -94,25 +94,6 @@ def get_series_episodes(series_name):
         title_div = soup.find('div', class_='Title--Content--Single-begin')
         title = title_div.h1.text if title_div else "عنوان غير متوفر"
 
-        # استخراج قائمة المواسم
-        seasons = []
-        seasons_div = soup.find('div', class_='List--Seasons--Episodes')
-        if seasons_div:
-            season_links = seasons_div.find_all('a')
-            for season in season_links:
-                season_title = season.text.strip()
-                season_link = season['href']
-
-                # إزالة الدومين إذا كان الرابط يحتوي عليه
-                if season_link.startswith("https://wecima.movie/"):
-                    season_link = season_link.replace("https://wecima.movie", "")
-
-                seasons.append({
-                    'title': season_title,
-                    'link': season_link,
-                    'image_url': "رابط الصورة غير متوفر"  # سيتم تحديث هذا لاحقاً
-                })
-
         episodes = []
 
         # البحث عن البيانات في علامة <script> التي تحتوي على JSON
@@ -127,39 +108,38 @@ def get_series_episodes(series_name):
                         image_url = item["thumbnailUrl"]
                         break
 
-        # تحديث image_url لكل موسم
-        for season in seasons:
-            season['image_url'] = image_url
-
         # استرجاع الحلقات
         episode_elements = soup.find_all('a', class_='hoverable activable')
         for episode in episode_elements:
             episode_link = episode['href']
-            parsed_url = urlparse(episode_link)
-            relative_link = f"{parsed_url.path}"
 
+            # إزالة الدومين
+            parsed_url = urlparse(episode_link)
+            relative_link = f"{parsed_url.path}"  # الاحتفاظ فقط بالمسار
+
+            # محاولة العثور على العنصر، وإذا لم يكن موجودًا، تجاهله
             episode_area = episode.find('episodearea')
             if episode_area:
                 episode_title = episode_area.find('episodetitle').text if episode_area.find('episodetitle') else "عنوان غير متوفر"
-                quality = episode_area.find('quality')
+
+                # إضافة بيانات الجودة
+                quality = episode_area.find('quality')  # استبدل 'quality' بالعلامة الصحيحة إذا كانت مختلفة
 
                 episodes.append({
-                    'link': relative_link,
+                    'link': relative_link,  # استخدام الرابط النسبي
                     'title': episode_title,
-                    'image_url': image_url,
-                    'quality': quality.text if quality else None,
+                    'image_url': image_url,  # استخدام رابط الصورة من البيانات المستخرجة
+                    'quality': quality.text if quality else None,  # تحقق من وجود الجودة
                 })
 
+        # حساب العدد الإجمالي للحلقات
         total_episodes = len(episodes)
-        for index, episode in enumerate(episodes):
-            episode['episode'] = total_episodes - index
 
-        return {
-            'title': title,
-            'image_url': image_url,
-            'seasons': seasons,
-            'episodes': episodes
-        }
+        # إضافة رقم الحلقة بطريقة معكوسة
+        for index, episode in enumerate(episodes):
+            episode['episode'] = total_episodes - index  # عكس الرقم
+
+        return {'title': title, 'image_url': image_url, 'episodes': episodes}
     
     return None
 
