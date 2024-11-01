@@ -79,12 +79,46 @@
         {% endif %}
     
         {% if episode_links %}
-            <h3>روابط تحميل الحلقات</h3>
-            {% for episode in episode_links %}
-                <a href="{{ episode.url }}" class="download-button">{{ episode.title }}</a>
-            {% endfor %}
-        {% endif %}
+        <h3>روابط تحميل الحلقات</h3>
+        {% for episode in episode_links %}
+            <a href="{{ episode.url }}" class="episode-button">{{ episode.title }}</a>
+        {% endfor %}
+    {% endif %}
     
+    <style>
+        /* تنسيق الأزرار في قسم روابط تحميل الحلقات فقط */
+        .episode-button {
+            display: inline-block;
+            margin: 10px; /* الهوامش بين الأزرار */
+            padding: 10px 25px; /* الحشوة */
+            background: linear-gradient(135deg, #0066ff, #0099ff);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px; /* الزوايا المدورة */
+            font-size: 16px; /* حجم الخط */
+            font-weight: bold;
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.3); /* الظل */
+            transition: all 0.3s ease;
+        }
+    
+        .episode-button:hover {
+            background: linear-gradient(135deg, #005ce6, #0088cc);
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.4); /* تأثير الظل عند التحويم */
+            transform: translateY(-2px);
+        }
+    
+        /* تحسينات لأحجام الشاشات الصغيرة */
+        @media (max-width: 600px) {
+            .episode-button {
+                font-size: 14px; /* حجم الخط على الشاشات الصغيرة */
+                padding: 8px 22px; /* الحشوة على الشاشات الصغيرة */
+            }
+            h3 {
+                font-size: 20px; /* زيادة حجم عنوان روابط تحميل الحلقات */
+            }
+        }
+    </style>
+        
     </div>
         
     <div id="countdown-container" style="display: flex; justify-content: center; margin-top: 20px;">
