@@ -25,14 +25,16 @@ def search(query):
 
 @app.route('/series/<path:series_name>/')  
 def series_page(series_name):
-    series_data = get_series_episodes(series_name)
-
-    if series_data:
-        page_title = series_data['title']
-        episodes = series_data['episodes']
-        return render_template('series.html', series=episodes, page_title=page_title)
-    else:
-        return "المسلسل غير موجود.", 404
+    series_data = get_series_episodes(series_name)  # افترضنا انك بترجع بيانات المواسم والحلقات هنا
+    page_title = series_data.get('title', '') if series_data else 'المسلسل'
+    episodes = series_data.get('episodes', []) if series_data else []
+    
+    return render_template(
+        'series.html',
+        series_data=series_data,  # أضفنا series_data هنا
+        series=episodes,
+        page_title=page_title
+    )
 
 @app.route('/watch/<path:target_url>', methods=['GET'])
 def watch_route(target_url):
