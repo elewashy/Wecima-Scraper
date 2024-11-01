@@ -23,14 +23,15 @@ def search(query):
     page_title = f"نتائج البحث عن : {query}"
     return render_template('search.html', series=series, page_title=page_title)
 
-@app.route('/series/<path:series_name>/')  
+@app.route('/series/<path:series_name>/')
 def series_page(series_name):
     series_data = get_series_episodes(series_name)
 
     if series_data:
         page_title = series_data['title']
+        seasons = series_data['seasons']
         episodes = series_data['episodes']
-        return render_template('series.html', series=episodes, page_title=page_title)
+        return render_template('All_series.html', seasons=seasons, episodes=episodes, page_title=page_title)
     else:
         return "المسلسل غير موجود.", 404
 
