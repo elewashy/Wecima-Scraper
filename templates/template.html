@@ -89,10 +89,12 @@
     </div>
 <!-- قسم تحميل الموسم كامل -->
 <div class="season-download-section" style="margin-top: 30px; text-align: center;">
-    {% for quality, link in links_season_download.items() %}
+    {% if links_season_download %}
     <h3>تحميل الموسم كامل</h3>
+    {% for quality, link in links_season_download.items() %}
         <a href="intent://{{ link.replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">{{ quality }}p</a>
     {% endfor %}
+    {% endif %}
 </div>
     <!-- إضافة قسم الحلقات -->
     {% if episode_links %}

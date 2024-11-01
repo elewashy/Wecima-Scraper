@@ -58,15 +58,20 @@ def scrape(target_url):
             links_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_watch.keys()}
             links_season_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_season_download.keys()}
 
-            # استخراج روابط الحلقات
             episode_links = []
             episodes_container = soup.find('div', class_='Seasons--Episodes')
             if episodes_container:
                 episodes = episodes_container.find_all('a', class_='hoverable activable')
                 for episode in episodes:
                     episode_url = episode['href'].replace("https://wecima.movie", "")  # إزالة الدومين
-                    episode_title = episode.find('episodetitle').text.strip()
-                    episode_links.append({'url': episode_url, 'title': episode_title})
+                    
+                    # تحقق من وجود العنصر
+                    title_element = episode.find('episodetitle')
+                    if title_element:
+                        episode_title = title_element.text.strip()
+                        episode_links.append({'url': episode_url, 'title': episode_title})
+                    else:
+                        print("لم يتم العثور على عنوان الحلقة.")
 
             # تمرير الروابط للقالب
             return render_template(
@@ -154,8 +159,14 @@ def download_view(target_url):
                     episodes = episodes_container.find_all('a', class_='hoverable activable')
                     for episode in episodes:
                         episode_url = episode['href'].replace("https://wecima.movie", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
-                        episode_title = episode.find('episodetitle').text.strip()
-                        episode_links.append({'url': episode_url, 'title': episode_title})
+                        
+                        # تحقق من وجود العنصر
+                        title_element = episode.find('episodetitle')
+                        if title_element:
+                            episode_title = title_element.text.strip()
+                            episode_links.append({'url': episode_url, 'title': episode_title})
+                        else:
+                            print("لم يتم العثور على عنوان الحلقة.")
 
                 # تمرير الروابط للقالب بعد تقسيمها
                 return render_template(
