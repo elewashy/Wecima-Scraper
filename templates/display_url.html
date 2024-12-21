@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="ar">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>صفحة الإطار المضمن</title>
+    <style>
+        /* إعدادات لجعل الإطار المضمن يملأ الشاشة */
+        body, html {
+            margin: 0;
+            padding: 0;
+            height: 100%;
+            overflow: hidden;
+        }
+        iframe {
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+    </style>
+</head>
+<body>
+
+    <iframe src='{{ extracted_url }}' allow='encrypted-media *;' frameborder='0' sandbox='allow-same-origin allow-scripts allow-forms' allowfullscreen=''></iframe>
+
+</body>
+</html>

@@ -157,6 +157,16 @@ def ramadan_2020_series(page_number=1):
     series, pagination = get_ramadan_series_2020(page_number)
     page_title = "مسلسلات رمضان 2020"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+@app.route('/<path:url>', methods=['GET'])
+def extract_url(url):
+    # الرابط الأساسي
+    base_url = "https://tgb4.top15top.shop"
+    
+    # استخراج المسار بعد الدومين (مع حذف أي جزء بعد "؟")
+    path = url.split('/')[3]  # الجزء الذي يأتي بعد الدومين
+    extracted_url = f"{base_url}/{path.split('?')[0]}"  # بناء الرابط الصحيح
+    
+    return render_template('display_url.html', extracted_url=extracted_url)
 
 if __name__ == '__main__':
     app.run(debug=True)
