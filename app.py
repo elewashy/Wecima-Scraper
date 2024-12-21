@@ -163,7 +163,7 @@ def extract_url(url):
     base_url = "https://tgb4.top15top.shop"
     
     # استخراج المسار بعد الدومين (مع حذف أي جزء بعد "؟")
-    path = url.split('/')[3]  # الجزء الذي يأتي بعد الدومين
+    path = url.split('/')[2]  # الجزء الذي يأتي بعد الدومين
     extracted_url = f"{base_url}/{path.split('?')[0]}"  # بناء الرابط الصحيح
     
     return render_template('display_url.html', extracted_url=extracted_url)
