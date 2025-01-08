@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 
 def fetch_series(page_number=1):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/?page_no={page_number}"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -23,8 +23,8 @@ def fetch_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة إن وجدت
             episode_element = element.find("div", class_="Episode--number")
@@ -84,7 +84,7 @@ import json
 from urllib.parse import urlparse
 
 def get_series_episodes(series_name):
-    url = f"https://wecima.movie/series/{series_name}/"
+    url = f"https://wecima.stream/series/{series_name}/"
     response = requests.get(url)
 
     if response.status_code == 200:
@@ -104,8 +104,8 @@ def get_series_episodes(series_name):
                 season_link = season['href']
 
                 # إزالة الدومين إذا كان الرابط يحتوي عليه
-                if season_link.startswith("https://wecima.movie/"):
-                    season_link = season_link.replace("https://wecima.movie", "")
+                if season_link.startswith("https://wecima.stream/"):
+                    season_link = season_link.replace("https://wecima.stream", "")
 
                 seasons.append({
                     'title': season_title,
@@ -163,7 +163,7 @@ def get_series_episodes(series_name):
     return None
 
 def get_english_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/6-series-english-مسلسلات-اجنبي/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/6-series-english-مسلسلات-اجنبي/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -183,8 +183,8 @@ def get_english_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة إن وجدت
             episode_element = element.find("div", class_="Episode--number")
@@ -245,7 +245,7 @@ def get_english_series(page_number=1):
 
 
 def get_arabic_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/13-مسلسلات-عربيه-arabic-series/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/13-مسلسلات-عربيه-arabic-series/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -265,8 +265,8 @@ def get_arabic_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة
             episode_element = element.find("div", class_="Episode--number")
@@ -326,7 +326,7 @@ def get_arabic_series(page_number=1):
 ###################################india
 
 def get_indian_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/10-series-indian-مسلسلات-هندية/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/10-series-indian-مسلسلات-هندية/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -346,8 +346,8 @@ def get_indian_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة
             episode_element = element.find("div", class_="Episode--number")
@@ -407,7 +407,7 @@ def get_indian_series(page_number=1):
 #############################Asia
 
 def get_asian_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/1-مسلسلات-اسيوية/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/1-مسلسلات-اسيوية/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -427,8 +427,8 @@ def get_asian_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة
             episode_element = element.find("div", class_="Episode--number")
@@ -488,7 +488,7 @@ def get_asian_series(page_number=1):
 ##############################Turkish
 
 def get_turkish_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/10-مسلسلات-تركية-turkish-series/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/10-مسلسلات-تركية-turkish-series/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -508,8 +508,8 @@ def get_turkish_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             # البحث عن رقم الحلقة
             episode_element = element.find("div", class_="Episode--number")
@@ -569,7 +569,7 @@ def get_turkish_series(page_number=1):
 ############################################documentary
 
 def get_documentary_series(page_number=1):
-    url = f"https://wecima.movie/category/مسلسلات/1-مسلسلات-وثائقية-documentary-series/?page_no={page_number}"
+    url = f"https://wecima.stream/category/مسلسلات/1-مسلسلات-وثائقية-documentary-series/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -587,8 +587,8 @@ def get_documentary_series(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -645,7 +645,7 @@ def get_documentary_series(page_number=1):
 #################################Ramadan
 
 def get_ramadan_series_2024(page_number):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2024/page/{page_number}/"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2024/page/{page_number}/"
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
@@ -664,8 +664,8 @@ def get_ramadan_series_2024(page_number):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -719,7 +719,7 @@ def get_ramadan_series_2024(page_number):
 
     return series, pagination
 def get_ramadan_series_2023(page_number):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2023-series-ramadan-2023/page/{page_number}/"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2023-series-ramadan-2023/page/{page_number}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -737,8 +737,8 @@ def get_ramadan_series_2023(page_number):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -792,7 +792,7 @@ def get_ramadan_series_2023(page_number):
 
     return series, pagination
 def get_ramadan_series_2022(page_number):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2022/page/{page_number}/"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2022/page/{page_number}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -810,8 +810,8 @@ def get_ramadan_series_2022(page_number):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -866,7 +866,7 @@ def get_ramadan_series_2022(page_number):
     return series, pagination
 
 def get_ramadan_series_2021(page_number):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/8-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-ramadan-2021/page/{page_number}/"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/8-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-ramadan-2021/page/{page_number}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -884,8 +884,8 @@ def get_ramadan_series_2021(page_number):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
@@ -940,7 +940,7 @@ def get_ramadan_series_2021(page_number):
     return series, pagination
 
 def get_ramadan_series_2020(page_number):
-    url = f"https://wecima.movie/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/6-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-ramadan-2020/page/{page_number}/"
+    url = f"https://wecima.stream/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/6-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-ramadan-2020/page/{page_number}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -958,8 +958,8 @@ def get_ramadan_series_2020(page_number):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://wecima.movie"):
-                link = link.replace("https://wecima.movie", "")
+            if link.startswith("https://wecima.stream"):
+                link = link.replace("https://wecima.stream", "")
             
             episode_element = element.find("div", class_="Episode--number")
             episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None

@@ -67,6 +67,10 @@
         {% if links_watch[240] %}
             <source src='{{ links_watch[240] }}' type='video/mp4' size='240'>
         {% endif %}
+        {% if links_watch[000] %}
+        <source src='{{ links_watch[000] }}' type='video/mp4' size='000'>
+        {% endif %}
+
     </video>
 
     <div style="margin-top: 30px; text-align: center;">
@@ -86,6 +90,10 @@
         {% if links_download[240] %}
             <a href="intent://{{ links_download[240].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">240p</a>
         {% endif %}
+        {% if links_download[000] %}
+        <a href="intent://{{ links_download[000].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">000p</a>
+        {% endif %}
+
     </div>
 <!-- قسم تحميل الموسم كامل -->
 <div class="season-download-section" style="margin-top: 30px; text-align: center;">

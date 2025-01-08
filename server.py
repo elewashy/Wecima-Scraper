@@ -3,10 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 
 def scrape(target_url):
-    full_url = f"https://wecima.movie/watch/{target_url}"
+    full_url = f"https://wecima.stream/watch/{target_url}"
 
     headers = {
-        'Referer': 'https://wecima.movie/',
+        'Referer': 'https://wecima.stream/',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
@@ -53,6 +53,8 @@ def scrape(target_url):
                         current_map[360] = video_link
                     elif "240" in resolution:
                         current_map[240] = video_link
+                    elif "غير محدد" in resolution:
+                        current_map[000] = video_link
 
             # تحويل الروابط إلى الشكل المطلوب
             links_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_watch.keys()}
@@ -63,7 +65,7 @@ def scrape(target_url):
             if episodes_container:
                 episodes = episodes_container.find_all('a', class_='hoverable activable')
                 for episode in episodes:
-                    episode_url = episode['href'].replace("https://wecima.movie", "")  # إزالة الدومين
+                    episode_url = episode['href'].replace("https://wecima.stream", "")  # إزالة الدومين
                     
                     # تحقق من وجود العنصر
                     title_element = episode.find('episodetitle')
@@ -88,10 +90,10 @@ def scrape(target_url):
         return str(e), 500
 ##########################################################Download
 def download_view(target_url):
-    full_url = f"https://wecima.movie/watch/{target_url}"
+    full_url = f"https://wecima.stream/watch/{target_url}"
 
     headers = {
-        'Referer': 'https://wecima.movie/',
+        'Referer': 'https://wecima.stream/',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
@@ -151,6 +153,11 @@ def download_view(target_url):
                                 season_links_watch[240] = video_link
                             else:
                                 quality_map_watch[240] = video_link
+                        elif "غير محدد" in resolution:
+                            if is_season_download:
+                                season_links_watch[000] = video_link
+                            else:
+                                quality_map_watch[000] = video_link
 
                 # استخراج روابط الحلقات وتعديل الروابط
                 episode_links = []
@@ -158,7 +165,7 @@ def download_view(target_url):
                 if episodes_container:
                     episodes = episodes_container.find_all('a', class_='hoverable activable')
                     for episode in episodes:
-                        episode_url = episode['href'].replace("https://wecima.movie", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
+                        episode_url = episode['href'].replace("https://wecima.stream", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
                         
                         # تحقق من وجود العنصر
                         title_element = episode.find('episodetitle')
