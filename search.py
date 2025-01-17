@@ -6,8 +6,8 @@ from urllib.parse import quote
 def search_series(query):
     query_encoded = quote(query)  # تشفير الاستعلام
     base_urls = [
-        f"https://wecima.stream/search/{query_encoded}/",
-        f"https://wecima.stream/search/{query_encoded}/list/series/"
+        f"https://wecima.watch/search/{query_encoded}/",
+        f"https://wecima.watch/search/{query_encoded}/list/series/"
     ]
 
     series = []
@@ -30,8 +30,8 @@ def search_series(query):
                 link_element = element.find("a")
                 link = link_element["href"] if link_element else "#"
                 
-                if link.startswith("https://wecima.stream"):
-                    link = link.replace("https://wecima.stream", "")
+                if link.startswith("https://wecima.watch"):
+                    link = link.replace("https://wecima.watch", "")
                 
                 episode_element = element.find("div", class_="Episode--number")
                 episode = episode_element.get_text(strip=True).replace("حلقة", "").strip() if episode_element else None
