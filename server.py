@@ -57,8 +57,8 @@ def scrape(target_url):
                         current_map[000] = video_link
 
             # تحويل الروابط إلى الشكل المطلوب
-            links_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_watch.keys()}
-            links_season_download = {quality: f"wecima-app.vercel.app/download/{target_url}" for quality in quality_map_season_download.keys()}
+            links_download = {quality: f"/download/{target_url}" for quality in quality_map_watch.keys()}
+            links_season_download = {quality: f"/download/{target_url}" for quality in quality_map_season_download.keys()}
 
             episode_links = []
             episodes_container = soup.find('div', class_='Seasons--Episodes')

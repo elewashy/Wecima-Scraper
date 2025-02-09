@@ -76,22 +76,22 @@
     <div style="margin-top: 30px; text-align: center;">
         <h3>سيرفرات التحميل</h3>
         {% if links_download[1080] %}
-            <a href="intent://{{ links_download[1080].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">1080p</a>
+            <a href="{{ links_download[1080].replace('https://', '') }}" class="download-button">1080p</a>
         {% endif %}
         {% if links_download[720] %}
-            <a href="intent://{{ links_download[720].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">720p</a>
+            <a href="{{ links_download[720].replace('https://', '') }}" class="download-button">720p</a>
         {% endif %}
         {% if links_download[480] %}
-            <a href="intent://{{ links_download[480].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">480p</a>
+            <a href="{{ links_download[480].replace('https://', '') }}" class="download-button">480p</a>
         {% endif %}
         {% if links_download[360] %}
-            <a href="intent://{{ links_download[360].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">360p</a>
+            <a href="{{ links_download[360].replace('https://', '') }}" class="download-button">360p</a>
         {% endif %}
         {% if links_download[240] %}
-            <a href="intent://{{ links_download[240].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">240p</a>
+            <a href="{{ links_download[240].replace('https://', '') }}" class="download-button">240p</a>
         {% endif %}
         {% if links_download[000] %}
-        <a href="intent://{{ links_download[000].replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">000p</a>
+        <a href="{{ links_download[000].replace('https://', '') }}" class="download-button">000p</a>
         {% endif %}
 
     </div>
@@ -100,7 +100,7 @@
     {% if links_season_download %}
     <h3>تحميل الموسم كامل</h3>
     {% for quality, link in links_season_download.items() %}
-        <a href="intent://{{ link.replace('https://', '') }}#Intent;scheme=https;end;" class="download-button">{{ quality }}p</a>
+        <a href="{{ link.replace('https://', '') }}" class="download-button">{{ quality }}p</a>
     {% endfor %}
     {% endif %}
 </div>
