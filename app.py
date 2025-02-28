@@ -10,7 +10,7 @@ import re
 
 app = Flask(__name__)
 
-@app.route('/main-home')
+@app.route('/')
 @app.route('/page/<int:page_number>/')  # إضافة مسار للصفحات
 def index(page_number=1):
     series, pagination = get_series(page_number)  # تمرير رقم الصفحة إلى الدالة
