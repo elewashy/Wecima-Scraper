@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 ###########################################################arabic
 def fetch_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/%D8%A3%D9%81%D9%84%D8%A7%D9%85/?page_no={page_number}"
+    url = f"https://wecima.watch/category/%D8%A3%D9%81%D9%84%D8%A7%D9%85/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -21,8 +21,8 @@ def fetch_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -76,7 +76,7 @@ def fetch_movies(page_number=1):
     return series, pagination
 
 def get_arabic_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/افلام-عربي-arabic-movies/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/افلام-عربي-arabic-movies/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -94,8 +94,8 @@ def get_arabic_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -150,7 +150,7 @@ def get_arabic_movies(page_number=1):
 
 ##############################################################English
 def get_english_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/10-movies-english-افلام-اجنبي/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/10-movies-english-افلام-اجنبي/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -168,8 +168,8 @@ def get_english_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -224,7 +224,7 @@ def get_english_movies(page_number=1):
 
 ############################################################################3india
 def get_indian_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/افلام-هندي-indian-movies/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/افلام-هندي-indian-movies/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -242,8 +242,8 @@ def get_indian_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -299,7 +299,7 @@ def get_indian_movies(page_number=1):
 ##########################################################Turkish
 
 def get_turkish_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/1-افلام-تركى-turkish-films/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/1-افلام-تركى-turkish-films/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -317,8 +317,8 @@ def get_turkish_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -375,7 +375,7 @@ def get_turkish_movies(page_number=1):
 ###########################################################################documentary
 
 def get_documentary_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/1-افلام-وثائقية-documentary-films/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/1-افلام-وثائقية-documentary-films/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -393,8 +393,8 @@ def get_documentary_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             
@@ -450,7 +450,7 @@ def get_documentary_movies(page_number=1):
 ###############################################################fullpack movies
 
 def get_full_pack_movies(page_number=1):
-    url = f"https://vbn1.t4ce4ma.shop/category/أفلام/10-movies-english-افلام-اجنبي/1-سلاسل-الافلام-الكاملة-full-pack/?page_no={page_number}"
+    url = f"https://wecima.watch/category/أفلام/10-movies-english-افلام-اجنبي/1-سلاسل-الافلام-الكاملة-full-pack/?page_no={page_number}"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -468,8 +468,8 @@ def get_full_pack_movies(page_number=1):
             link_element = element.find("a")
             link = link_element["href"] if link_element else "#"
             
-            if link.startswith("https://vbn1.t4ce4ma.shop"):
-                link = link.replace("https://vbn1.t4ce4ma.shop", "")
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
             
             episode = None  # للأفلام لا حاجة للحلقات
             

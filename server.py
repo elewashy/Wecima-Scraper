@@ -3,10 +3,10 @@ import requests
 from bs4 import BeautifulSoup
 
 def scrape(target_url):
-    full_url = f"https://vbn1.t4ce4ma.shop/watch/{target_url}"
+    full_url = f"https://wecima.watch/watch/{target_url}"
 
     headers = {
-        'Referer': 'https://vbn1.t4ce4ma.shop/',
+        'Referer': 'https://wecima.watch/',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
@@ -65,7 +65,7 @@ def scrape(target_url):
             if episodes_container:
                 episodes = episodes_container.find_all('a', class_='hoverable activable')
                 for episode in episodes:
-                    episode_url = episode['href'].replace("https://vbn1.t4ce4ma.shop", "")  # إزالة الدومين
+                    episode_url = episode['href'].replace("https://wecima.watch", "")  # إزالة الدومين
                     
                     # تحقق من وجود العنصر
                     title_element = episode.find('episodetitle')
@@ -90,10 +90,10 @@ def scrape(target_url):
         return str(e), 500
 ##########################################################Download
 def download_view(target_url):
-    full_url = f"https://vbn1.t4ce4ma.shop/watch/{target_url}"
+    full_url = f"https://wecima.watch/watch/{target_url}"
 
     headers = {
-        'Referer': 'https://vbn1.t4ce4ma.shop/',
+        'Referer': 'https://wecima.watch/',
         'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/91.0.4472.124 Safari/537.36'
     }
 
@@ -165,7 +165,7 @@ def download_view(target_url):
                 if episodes_container:
                     episodes = episodes_container.find_all('a', class_='hoverable activable')
                     for episode in episodes:
-                        episode_url = episode['href'].replace("https://vbn1.t4ce4ma.shop", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
+                        episode_url = episode['href'].replace("https://wecima.watch", "").replace("/watch", "/download")  # تعديل الرابط ليبدأ بـ /download
                         
                         # تحقق من وجود العنصر
                         title_element = episode.find('episodetitle')
