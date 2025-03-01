@@ -5,7 +5,7 @@ from movies import get_arabic_movies, get_english_movies, get_indian_movies, get
 from latest import get_series
 from search import search_series
 from server import scrape, download_view
-from series import get_english_series, get_arabic_series, get_indian_series, get_asian_series, get_turkish_series, get_documentary_series, get_ramadan_series_2024, get_ramadan_series_2023, get_ramadan_series_2022, get_ramadan_series_2021, get_ramadan_series_2020, fetch_series, get_series_episodes
+from series import get_english_series, get_arabic_series, get_indian_series, get_asian_series, get_turkish_series, get_documentary_series, get_ramadan_series_2025, get_ramadan_series_2024, get_ramadan_series_2023, get_ramadan_series_2022, get_ramadan_series_2021, get_ramadan_series_2020, fetch_series, get_series_episodes
 import re
 
 app = Flask(__name__)
@@ -129,7 +129,13 @@ def documentary_series(page_number=1):
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
 @app.route('/ramadan-series/page/<int:page_number>/', methods=['GET'])
-def ramadan_series(page_number=1):
+def ramadan_2025_series(page_number=1):
+    series, pagination = get_ramadan_series_2025(page_number)
+    page_title = "مسلسلات رمضان 2025"
+    return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
+
+@app.route('/ramadan-series/page/<int:page_number>/', methods=['GET'])
+def ramadan_2024_series(page_number=1):
     series, pagination = get_ramadan_series_2024(page_number)
     page_title = "مسلسلات رمضان 2024"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)

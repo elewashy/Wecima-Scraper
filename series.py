@@ -643,6 +643,80 @@ def get_documentary_series(page_number=1):
     return series, pagination
 
 #################################Ramadan
+def get_ramadan_series_2025(page_number):
+    url = f"https://wecima.watch/category/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa-%d8%b1%d9%85%d8%b6%d8%a7%d9%86-2025/page/{page_number}/"
+
+    response = requests.get(url)
+    soup = BeautifulSoup(response.content, "html.parser")
+    
+    series = []
+    
+    series_container = soup.find("div", class_="Grid--WecimaPosts")
+    
+    if series_container:
+        series_elements = series_container.find_all("div", class_="Thumb--GridItem")
+
+        for element in series_elements:
+            title_element = element.find("strong", class_="hasyear")
+            title = title_element.text.strip() if title_element else "عنوان غير متوفر"
+            
+            link_element = element.find("a")
+            link = link_element["href"] if link_element else "#"
+            
+            if link.startswith("https://wecima.watch"):
+                link = link.replace("https://wecima.watch", "")
+            
+            episode_element = element.find("div", class_="Episode--number")
+            episode = episode_element.text.strip().replace("حلقة", "").strip() if episode_element else None
+            
+            bg_image_element = element.find("span", class_="BG--GridItem")
+            image_url = "رابط صورة غير متوفر"
+            
+            if bg_image_element:
+                lazy_style_value = bg_image_element.get('data-lazy-style', '')
+                image_url_match = re.search(r'url\((.*?)\)', lazy_style_value)
+                if image_url_match:
+                    image_url = image_url_match.group(1).strip('\"')
+
+            series.append({
+                "title": title,
+                "link": link,
+                "image_url": image_url,
+                "episode": episode
+            })
+
+    pagination = []
+    pagination_container = soup.find("div", class_="pagination")
+    
+    if pagination_container:
+        page_links = pagination_container.find_all("li")
+        for page in page_links:
+            link = page.find("a", class_="page-numbers")
+            current_page = page.find("span", class_="current")
+            
+            if link:
+                page_number_text = link.text.strip()
+                page_url = f"/ramadan-2025-series/page/{page_number_text}/"
+                is_active = str(page_number) == page_number_text
+                pagination.append({
+                    "number": page_number_text,
+                    "url": page_url,
+                    "active": is_active
+                })
+            elif current_page:
+                pagination.append({
+                    "number": current_page.text.strip(),
+                    "url": "#",
+                    "active": True
+                })
+            else:
+                pagination.append({
+                    "number": page.find("span").text.strip(),
+                    "url": "#",
+                    "active": False
+                })
+
+    return series, pagination
 
 def get_ramadan_series_2024(page_number):
     url = f"https://wecima.watch/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2024/page/{page_number}/"
@@ -697,7 +771,7 @@ def get_ramadan_series_2024(page_number):
             
             if link:
                 page_number_text = link.text.strip()
-                page_url = f"/ramadan-series/page/{page_number_text}/"
+                page_url = f"/ramadan-2024-series/page/{page_number_text}/"
                 is_active = str(page_number) == page_number_text
                 pagination.append({
                     "number": page_number_text,
