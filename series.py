@@ -644,7 +644,7 @@ def get_documentary_series(page_number=1):
 
 #################################Ramadan
 def get_ramadan_series_2025(page_number):
-    url = f"https://wecima.watch/category/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa/%d9%85%d8%b3%d9%84%d8%b3%d9%84%d8%a7%d8%aa-%d8%b1%d9%85%d8%b6%d8%a7%d9%86-2025/page/{page_number}/"
+    url = f"https://wecima.watch/category/مسلسلات/مسلسلات-رمضان-2025/page/{page_number}/"
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
@@ -719,7 +719,7 @@ def get_ramadan_series_2025(page_number):
     return series, pagination
 
 def get_ramadan_series_2024(page_number):
-    url = f"https://wecima.watch/category/%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA/1-%D9%85%D8%B3%D9%84%D8%B3%D9%84%D8%A7%D8%AA-%D8%B1%D9%85%D8%B6%D8%A7%D9%86-2024/page/{page_number}/"
+    url = f"https://wecima.watch/category/مسلسلات/1-مسلسلات-رمضان-2024/page/{page_number}/"
 
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")

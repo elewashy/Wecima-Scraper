@@ -128,13 +128,13 @@ def documentary_series(page_number=1):
     page_title = "المسلسلات الوثائقية"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-@app.route('/ramadan-series/page/<int:page_number>/', methods=['GET'])
+@app.route('/ramadan-2025-series/page/<int:page_number>/', methods=['GET'])
 def ramadan_2025_series(page_number=1):
     series, pagination = get_ramadan_series_2025(page_number)
     page_title = "مسلسلات رمضان 2025"
     return render_template('series.html', series=series, pagination=pagination, page_title=page_title)
 
-@app.route('/ramadan-series/page/<int:page_number>/', methods=['GET'])
+@app.route('/ramadan-2024-series/page/<int:page_number>/', methods=['GET'])
 def ramadan_2024_series(page_number=1):
     series, pagination = get_ramadan_series_2024(page_number)
     page_title = "مسلسلات رمضان 2024"
