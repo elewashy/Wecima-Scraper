@@ -4,6 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سيرفرات التحميل</title>
+    <style type="text/css">
+		@font-face {
+			font-family: "MainFont";
+			font-weight: bold;
+			src: url(/static/fonts/Bahij_TheSansArabic-Black.ttf);
+		}
+
+		@font-face {
+			font-family: "MainFont";
+			font-weight: 400;
+			src: url("/static/fonts/Bahij_TheSansArabic-Bold.ttf");
+		}
+	</style>
     <style>
         body {
             margin: 0;
@@ -131,7 +144,7 @@
         
     <div id="countdown-container" style="display: flex; justify-content: center; margin-top: 20px;">
         <div id="countdown-circle">
-            <span id="countdown-text">10</span>
+            <span id="countdown-text">5</span>
         </div>
     </div>
     
@@ -157,8 +170,8 @@
     </style>
     
     <script>
-        // تعيين العداد على 10 ثواني
-        var timeLeft = 10;
+        // تعيين العداد على 5 ثواني
+        var timeLeft = 5;
         var countdownText = document.getElementById('countdown-text');
         var countdownContainer = document.getElementById('countdown-container');
     
