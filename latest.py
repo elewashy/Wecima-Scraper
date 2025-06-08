@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 
 def get_series(page_number=1):
-    url = f"https://wecima.film/page/{page_number}/"
+    url = f"https://wecima.video/page/{page_number}/"
     response = requests.get(url)
     soup = BeautifulSoup(response.content, "html.parser")
     
@@ -23,8 +23,8 @@ def get_series(page_number=1):
             link = link_element["href"] if link_element else "#"
             
             # تعديل الرابط ليكون /watch وباقي الرابط
-            if link.startswith("https://wecima.film"):
-                link = link.replace("https://wecima.film", "")
+            if link.startswith("https://wecima.video"):
+                link = link.replace("https://wecima.video", "")
             
             # البحث عن رقم الحلقة
             episode_element = element.find("div", class_="Episode--number")
